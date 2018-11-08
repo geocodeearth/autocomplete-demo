@@ -11,7 +11,8 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
   <style>
-    #map{ height: 800px; }
+    html, body { margin: 0; padding: 0; border: 0; }
+    #map{ width: 100%; height:100%; }
   </style>
 </head>
 <body>
@@ -32,8 +33,12 @@
       center:[42.35, -71.08],
       zoom: 3,
       minZoom:2,
-      scrollWheelZoom: false
+      scrollWheelZoom: false,
+      zoomControl: false
     });
+
+    // add zoom control in topright corner
+    L.control.zoom({ position:'topright' }).addTo(map);
 
     var geocodingOptions = {
       url: 'https://api.geocode.earth/v1',
