@@ -11,4 +11,4 @@ the low-latency, partial input aware autocomplete endpoint is used most of the
 time. The `/v1/search` endpoint, which has enhanced logic for complete inputs, is used when necessary.
 
 ### Signup
-To get your own API key to add autocomplete to your website, visit [geocode.earth](https://geocode.earth).
+To get your own API key to add autocomplete to your website, visit [Geocode Earth](https://geocode.earth).
