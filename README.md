@@ -1,4 +1,4 @@
-## geocode.earth autocomplete demo
+## Geocode Earth autocomplete demo
 
 [Demo link](https://geocodeearth.github.io/autocomplete-demo/)
 
