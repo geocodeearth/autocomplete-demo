@@ -12,3 +12,10 @@ time. The `/v1/search` endpoint, which has enhanced logic for complete inputs, i
 
 ### Signup
 To get your own API key to add autocomplete to your website, visit [Geocode Earth](https://geocode.earth).
+
+
+### Running locally
+
+```bash
+python3 -m http.server 8800
+```
