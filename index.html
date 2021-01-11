@@ -1,6 +1,8 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <title>Geocode Earth Leaflet autocomplete demo</title>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
@@ -11,8 +13,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.9.4/leaflet-geocoder-mapzen.js"></script>
   <style>
-    html, body { margin: 0; padding: 0; border: 0; }
-    #map{ width: 100%; height:100%; }
+    html, body, #map {
+      width: 100%; height: 100%;
+      margin: 0; padding: 0; border: 0;
+    }
   </style>
 </head>
 <body>
@@ -29,6 +33,8 @@
           return String.fromCharCode(k + ((c == 0) ? 64 : 96));
         }).join('');
     };
+
+    // init leaflet map
     var map = L.map('map', {
       center:[42.35, -71.08],
       zoom: 3,
@@ -38,21 +44,53 @@
     });
 
     // add zoom control in topright corner
-    L.control.zoom({ position:'topright' }).addTo(map);
+    // L.control.zoom({ position:'topright' }).addTo(map);
 
+    // set geocoder options
     var geocodingOptions = {
       url: 'https://api.geocode.earth/v1',
       expanded: true,
-      attribution: '<a href="https://geocode.earth">Geocode Earth</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> and <a href="    https://geocode.earth/guidelines">others</a>'
+      attribution: '<a href="https://geocode.earth">Geocode Earth</a>, <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> and <a href="https://geocode.earth/guidelines">others</a>',
+      params: {
+        size: 5
+      }
     };
 
-    L.control.geocoder(rot13('tr-5sp05q10542r8o04'), geocodingOptions).addTo(map);
+    // initialize pelias geocoder plugin
+    var geocoder = L.control.geocoder(rot13('tr-5sp05q10542r8o04'), geocodingOptions);
 
-    L.tileLayer('http://tile.stamen.com/toner/{z}/{x}/{y}.png', {
+    // override showResults() to only show max 5 results
+    // var sr = geocoder.showResults.bind(g);
+    // geocoder.showResults = function(features, input){
+    //   if( features.length > 5 ){
+    //     features.length = 5;
+    //   }
+    //   sr(features, input);
+    // };
+
+    // override showMarker() to zoom to feature and open pop-up
+    geocoder.showMarker = function(text, latlng){
+      this._map.setView(latlng, 16);
+      var markerOptions = (typeof this.options.markers === 'object') ? this.options.markers : {};
+
+      if (this.options.markers) {
+        var marker = new L.marker(latlng, markerOptions).bindPopup(text); // eslint-disable-line new-cap
+        this._map.addLayer(marker);
+        this.markers.push(marker);
+        marker.openPopup();
+      }
+    }.bind(geocoder);
+
+    // add the customized geocoder to map
+    geocoder.addTo(map);
+
+    // configure tile layer
+    L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
       attribution: 'Tiles by <a href="http://stamen.com">Stamen Design</a>',
       maxZoom: 17,
       minZoom: 1
     }).addTo(map);
+
   </script>
   </body>
 </html>
