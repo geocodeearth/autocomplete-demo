@@ -4,6 +4,7 @@
   <title>Geocode Earth Leaflet autocomplete demo</title>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script src="https://unpkg.com/protomaps-leaflet@5.0.0/dist/protomaps-leaflet.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.1/dist/leaflet.css"
    integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
    crossorigin=""/>
@@ -85,8 +86,10 @@
     geocoder.addTo(map);
 
     // configure tile layer
-    L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png', {
-      attribution: 'Tiles by <a href="http://stamen.com">Stamen Design</a>',
+    protomapsL.leafletLayer({
+      url: 'https://api.protomaps.com/tiles/v4/{z}/{x}/{y}.mvt?key=795dd4ec374ec84d',
+      flavor: "light",
+      lang: "en",
       maxZoom: 17,
       minZoom: 1
     }).addTo(map);
